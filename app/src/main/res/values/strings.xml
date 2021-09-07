@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">nav</string>
+    <string name="title_home">Home</string>
+    <string name="title_community">Community</string>
+    <string name="title_mypage">My page</string>
+    <string name="title_settings">Settings</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="deBroomePink">#fddbd4</color>
+    <color name="deBroomePetrol">#004b64</color>
+    <color name="deBroomeOrange">#ff532f</color>
+    <color name="deBroomeAqua">#489cb7</color>
+
+    <color name="main_01">#606F76</color>
+    <color name="main_02">#4E5255</color>
+    <color name="sub_01">#C5A589</color>
+    <color name="sub_02">#9C9584</color>
+    <color name="sub_03">#E6D6C6</color>
+    <color name="sub_04">#EFEAE4</color>
+    <color name="sub_05">#B2B2B2</color>
+</resources>
