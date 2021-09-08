@@ -7,24 +7,153 @@
     tools:context=".ui.home.HomeFragment">
 
 
-    <WebView
-        android:id="@+id/mwebView"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="173dp"
-        android:layout_y="352dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <TextView
+        android:id="@+id/o_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Original Season"
+        app:layout_constraintBottom_toTopOf="@+id/original_season"
+        app:layout_constraintStart_toStartOf="@+id/original_season"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
+    <RadioGroup
+        android:id="@+id/original_season"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/o_question">
+
+        <RadioButton
+            android:id="@+id/o_spring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/spring" />
+
+        <RadioButton
+            android:id="@+id/o_summer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/summer" />
+
+        <RadioButton
+            android:id="@+id/o_autumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/autumn" />
+
+        <RadioButton
+            android:id="@+id/o_winter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/winter" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/selected_o_season"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="selected season"
+        app:layout_constraintStart_toStartOf="@+id/original_season"
+        app:layout_constraintTop_toBottomOf="@+id/original_season" />
+
+
+    <TextView
+        android:id="@+id/d_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Desired Season"
+        app:layout_constraintBottom_toTopOf="@+id/desired_season"
+        app:layout_constraintStart_toStartOf="@+id/desired_season" />
+
+    <RadioGroup
+        android:id="@+id/desired_season"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/original_season">
+
+        <RadioButton
+            android:id="@+id/d_spring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/spring" />
+
+        <RadioButton
+            android:id="@+id/d_summer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/summer" />
+
+        <RadioButton
+            android:id="@+id/d_autumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/autumn" />
+
+        <RadioButton
+            android:id="@+id/d_winter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/winter" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/selected_d_season"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="selected season"
+        app:layout_constraintStart_toStartOf="@+id/desired_season"
+        app:layout_constraintTop_toBottomOf="@+id/desired_season" />
+
+
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">nav</string>
+    <string name="app_name">Image Style Transfer</string>
     <string name="title_home">Home</string>
     <string name="title_community">Community</string>
     <string name="title_mypage">My page</string>
     <string name="title_settings">Settings</string>
+
+    <string name="spring">Spring</string>
+    <string name="summer">Summer</string>
+    <string name="autumn">Autumn</string>
+    <string name="winter">Winter</string>
 </resources>
