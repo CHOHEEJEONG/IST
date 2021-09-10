@@ -77,12 +77,7 @@ class HomeFragment : Fragment() {
 
 
         btn_transfer.setOnClickListener(View.OnClickListener {
-            fun onClick(v: View?) {
-                val originalId: Int = originalGroup!!.checkedRadioButtonId
-                originalButton = originalGroup!!.getChildAt(originalId) as RadioButton
-                Toast.makeText(mainActivity, "Selected Season : " +originalButton!!.text, Toast.LENGTH_LONG).show()
-
-            }
+            Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
         })
 
         Log.e("setOnClickListener", "ENTER")
