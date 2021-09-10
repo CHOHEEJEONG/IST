@@ -54,28 +54,28 @@
             android:id="@+id/o_spring"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/spring" />
 
         <RadioButton
             android:id="@+id/o_summer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/summer" />
 
         <RadioButton
             android:id="@+id/o_autumn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/autumn" />
 
         <RadioButton
             android:id="@+id/o_winter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/winter" />
     </RadioGroup>
 
@@ -114,28 +114,28 @@
             android:id="@+id/d_spring"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/spring" />
 
         <RadioButton
             android:id="@+id/d_summer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/summer" />
 
         <RadioButton
             android:id="@+id/d_autumn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/autumn" />
 
         <RadioButton
             android:id="@+id/d_winter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+
             android:text="@string/winter" />
     </RadioGroup>
 
