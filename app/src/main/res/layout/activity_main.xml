@@ -7,21 +7,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-        <WebView
+    <WebView
         android:id="@+id/mwebView"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/btn_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="340dp"
         android:background="@drawable/button_custom"
         android:text="Move to main2"
         android:textColor="@drawable/button_text_custom"

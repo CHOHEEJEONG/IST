@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         mwebView.webViewClient = WebViewClient()
         mwebView.webChromeClient = WebChromeClient()
         /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
-        mwebView.loadUrl("http://34.64.143.233:8080/") //링크 주소를 Load (http://34.64.143.233:8080/)
+        mwebView.loadUrl("http://naver.com") //링크 주소를 Load (http://34.64.143.233:8080/)
 
         btn_main.setOnClickListener {
             val intent = Intent(this, MainActivity2:: class.java)
