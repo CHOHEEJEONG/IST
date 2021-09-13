@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,8 +28,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.radiobutton.MaterialRadioButton
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,16 +50,10 @@ class HomeFragment : Fragment() {
     var selectedDSeason: TextView? = null
 
 
-
-
     val REQUEST_IMAGE_CAPTURE = 1  // 카메라 사진 촬영 요청 코드 *임의로 값 입력
     lateinit var currentPhotoPath : String // 문자열 형태의 사진 경로값 (초기값을 null로 시작하고 싶을 때 - lateinit var)
     val REQUEST_IMAGE_PICK = 10
 
-    private val getContent =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            binding.imgPhoto.setImageURI(result.data?.data)
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -84,6 +79,7 @@ class HomeFragment : Fragment() {
         val btn_capture: Button = binding.btnCapture
         val btn_album: Button = binding.btnAlbum
 
+
         originalGroup?.setOnCheckedChangeListener { group, i ->
             val idx = group.indexOfChild(root.findViewById(group.checkedRadioButtonId))
             originalButton = group.getChildAt(idx) as MaterialRadioButton
@@ -101,6 +97,22 @@ class HomeFragment : Fragment() {
 
         btn_transfer.setOnClickListener(View.OnClickListener {
             Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
+            bitmapToByteArray()
+
+
+            /*val selectedImage = bitmapToByteArray2()
+            //val selectedImage = bitmapToByteArray3()
+
+            val webview = WebView(mainActivity)
+            val url = "http://34.64.143.233:8080/profile"
+
+            val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
+                    "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
+                    "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
+
+            webview.postUrl(url, postData.toByteArray())
+            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()*/
+
         })
 
         btn_capture.setOnClickListener {
@@ -117,6 +129,71 @@ class HomeFragment : Fragment() {
 
     }
 
+    fun bitmapToByteArray() {
+        val ivSource: ImageView = img_photo
+        val ivCompressed: ImageView = iv_compressed
+
+        try {
+            val d = ivSource.drawable as BitmapDrawable
+            val bitmap = d.bitmap
+
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            val byteArray = stream.toByteArray()
+            val compressedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            ivCompressed.setImageBitmap(compressedBitmap)
+            Toast.makeText(
+                mainActivity.applicationContext,
+                "ByteArray created..",
+                Toast.LENGTH_SHORT
+            ).show()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    // Bitmap을 Byte로 변환
+    fun bitmapToByteArray3(): ByteArray {
+        val ivSource: ImageView = img_photo
+
+        val d = ivSource.drawable as BitmapDrawable
+        val bitmap = d.bitmap
+
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        return stream.toByteArray()
+
+    }
+
+    // 2 아니면 3
+    fun bitmapToByteArray2(): Bitmap? {
+        val ivSource: ImageView = img_photo
+
+        val d = ivSource.drawable as BitmapDrawable
+        val bitmap = d.bitmap
+
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val byteArray = stream.toByteArray()
+        val compressedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        return compressedBitmap
+
+    }
+
+
+
+    // 이미지를 바이트 배열로 변환 : 나중에 지우기
+    @Throws(IOException::class)
+    fun getBytes(`is`: InputStream): ByteArray? {
+        val byteBuffer = ByteArrayOutputStream()
+        val bufferSize = 1024 // 버퍼 크기
+        val buffer = ByteArray(bufferSize) // 버퍼 배열
+        var len = 0
+
+        // InputStream에서 읽어올 게 없을 때까지 바이트 배열에 쓴다.
+        while (`is`.read(buffer).also { len = it } != -1) byteBuffer.write(buffer, 0, len)
+        return byteBuffer.toByteArray()
+    }
 
     // 사진첩에서 사진 불러오기
     private fun getPhotoFromMyGallary() {
