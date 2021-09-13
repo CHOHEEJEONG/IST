@@ -1,6 +1,5 @@
 package com.example.nav.ui.home
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,31 +10,22 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.nav.R
 import com.example.nav.databinding.FragmentHomeBinding
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import android.widget.Toast
-import androidx.core.view.get
 import android.widget.RadioButton
-import com.example.nav.MainActivity
 import com.example.nav.MainActivity2
 import android.widget.RadioGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.radiobutton.MaterialRadioButton
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -126,9 +116,6 @@ class HomeFragment : Fragment() {
         return root
 
     }
-
-
-
 
 
     // 사진첩에서 사진 불러오기
