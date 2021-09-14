@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.google.android.material.radiobutton.MaterialRadioButton
 import java.io.*
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -97,21 +99,24 @@ class HomeFragment : Fragment() {
 
         btn_transfer.setOnClickListener(View.OnClickListener {
             Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
-            bitmapToByteArray()
 
+            //bitmapToByteArray()
 
-            /*val selectedImage = bitmapToByteArray2()
-            //val selectedImage = bitmapToByteArray3()
+            //val selectedImage = bitmapToByteArray2()
+            val selectedImage = bitmapToByteArray3()
 
             val webview = WebView(mainActivity)
-            val url = "http://34.64.143.233:8080/profile"
+            val url = "http://34.64.143.233:8080/transform"
 
             val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
                     "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
                     "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
 
             webview.postUrl(url, postData.toByteArray())
-            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()*/
+            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()
+
+            // 변환 결과 보여주는 web으로 이동
+
 
         })
 
@@ -194,6 +199,10 @@ class HomeFragment : Fragment() {
         while (`is`.read(buffer).also { len = it } != -1) byteBuffer.write(buffer, 0, len)
         return byteBuffer.toByteArray()
     }
+
+
+
+
 
     // 사진첩에서 사진 불러오기
     private fun getPhotoFromMyGallary() {
