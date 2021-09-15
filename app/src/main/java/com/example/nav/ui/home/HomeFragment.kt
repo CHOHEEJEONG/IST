@@ -15,9 +15,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,16 +28,13 @@ import android.widget.RadioGroup
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import com.example.nav.MainActivity
-import com.example.nav.ui.community.CommunityFragment
 import com.google.android.material.radiobutton.MaterialRadioButton
 import java.io.*
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import com.example.nav.R
-import com.example.nav.TransferFragment
+
 
 
 class HomeFragment : Fragment() {
@@ -88,18 +83,6 @@ class HomeFragment : Fragment() {
         val btn_capture: Button = binding.btnCapture
         val btn_album: Button = binding.btnAlbum
 
-        /*// 로그인 후 HomeFragment 보여주기
-        val myWebView: WebView = hwebView
-        // 웹뷰의 자바스크립트 기능을 활성화 시킵니다.
-        myWebView.settings.javaScriptEnabled = true
-
-        //BlackJin 명의 JavascriptInterface 를 추가해 줍니다.
-        myWebView.addJavascriptInterface(MainActivity2.WebAppInterface(mainActivity), "Android")
-
-        //assets에 있는 sample.html을 로딩합니다.
-        val url = "http://34.64.143.233:8080/login"
-        myWebView.loadUrl(url)*/
-
 
         originalGroup?.setOnCheckedChangeListener { group, i ->
             val idx = group.indexOfChild(root.findViewById(group.checkedRadioButtonId))
@@ -126,6 +109,7 @@ class HomeFragment : Fragment() {
         }
 
         (activity as MainActivity2).setPermission()
+
 
         return root
 
@@ -161,6 +145,8 @@ class HomeFragment : Fragment() {
         })
 
     }
+
+
 
     fun bitmapToByteArray() {
         val ivSource: ImageView = img_photo
@@ -230,14 +216,7 @@ class HomeFragment : Fragment() {
 
 
 
-    fun goToWeb(view: WebView, url: String) {
-        view.settings.javaScriptEnabled = true // 자바 스크립트 허용
-        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
-        view.webViewClient = WebViewClient()
-        view.webChromeClient = WebChromeClient()
-        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
-        view.loadUrl(url)
-    }
+
 
     // 사진첩에서 사진 불러오기
     private fun getPhotoFromMyGallary() {
