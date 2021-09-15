@@ -1,15 +1,20 @@
 package com.example.nav
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,13 +24,17 @@ class MainActivity : AppCompatActivity() {
 
         val naver = "http://naver.com"
         val url = "http://34.64.143.233:8080/login"
-        goToWeb(mwebView,naver)
+        goToWeb(mwebView,url)
 
+        // main2로 가기 위한 임시 버튼 생성 : 최종 작업이 끝나면 url 변경 후 지울 예정
         btn_main.setOnClickListener {
             val intent = Intent(this, MainActivity2:: class.java)
             startActivity(intent);
         }
+
+
     }
+
 
     fun goToWeb(view: WebView, url: String) {
         view.settings.javaScriptEnabled = true // 자바 스크립트 허용

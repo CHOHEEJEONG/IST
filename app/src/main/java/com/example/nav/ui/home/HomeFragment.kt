@@ -15,7 +15,9 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,14 +27,19 @@ import android.widget.Toast
 import android.widget.RadioButton
 import com.example.nav.MainActivity2
 import android.widget.RadioGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import com.example.nav.MainActivity
+import com.example.nav.ui.community.CommunityFragment
 import com.google.android.material.radiobutton.MaterialRadioButton
 import java.io.*
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.nav.R
+import com.example.nav.TransferFragment
 
 
 class HomeFragment : Fragment() {
@@ -57,6 +64,7 @@ class HomeFragment : Fragment() {
     val REQUEST_IMAGE_PICK = 10
 
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity2
@@ -76,10 +84,21 @@ class HomeFragment : Fragment() {
         desiredGroup = binding.desiredSeason
         selectedOSeason = binding.selectedOSeason
         selectedDSeason = binding.selectedDSeason
-        val btn_transfer: Button = binding.btnTransfer
 
         val btn_capture: Button = binding.btnCapture
         val btn_album: Button = binding.btnAlbum
+
+        /*// 로그인 후 HomeFragment 보여주기
+        val myWebView: WebView = hwebView
+        // 웹뷰의 자바스크립트 기능을 활성화 시킵니다.
+        myWebView.settings.javaScriptEnabled = true
+
+        //BlackJin 명의 JavascriptInterface 를 추가해 줍니다.
+        myWebView.addJavascriptInterface(MainActivity2.WebAppInterface(mainActivity), "Android")
+
+        //assets에 있는 sample.html을 로딩합니다.
+        val url = "http://34.64.143.233:8080/login"
+        myWebView.loadUrl(url)*/
 
 
         originalGroup?.setOnCheckedChangeListener { group, i ->
@@ -97,28 +116,6 @@ class HomeFragment : Fragment() {
         }
 
 
-        btn_transfer.setOnClickListener(View.OnClickListener {
-            Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
-
-            //bitmapToByteArray()
-
-            //val selectedImage = bitmapToByteArray2()
-            val selectedImage = bitmapToByteArray3()
-
-            val webview = WebView(mainActivity)
-            val url = "http://34.64.143.233:8080/transform"
-
-            val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
-                    "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
-                    "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
-
-            webview.postUrl(url, postData.toByteArray())
-            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()
-
-            // 변환 결과 보여주는 web으로 이동
-
-
-        })
 
         btn_capture.setOnClickListener {
             takeCapture()
@@ -131,6 +128,37 @@ class HomeFragment : Fragment() {
         (activity as MainActivity2).setPermission()
 
         return root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val navController: NavController = Navigation.findNavController(view)
+
+        // 변환 버튼 클릭 시 웹으로 데이터 전송 및 변환 결과 보여주는 웹으로 이동
+        btn_transfer.setOnClickListener(View.OnClickListener {
+            Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
+
+            //bitmapToByteArray()
+            //val selectedImage = bitmapToByteArray2()
+            val selectedImage = bitmapToByteArray3()
+
+            val webview = WebView(mainActivity)
+            val dataUrl = "http://34.64.143.233:8080/transform"
+
+            val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
+                    "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
+                    "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
+
+            webview.postUrl(dataUrl, postData.toByteArray())
+            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()
+
+
+            // 변환 결과 web 띄우기
+            Toast.makeText(mainActivity, "변환 결과 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.action_navigation_home_to_transferFragment)
+        })
 
     }
 
@@ -202,7 +230,14 @@ class HomeFragment : Fragment() {
 
 
 
-
+    fun goToWeb(view: WebView, url: String) {
+        view.settings.javaScriptEnabled = true // 자바 스크립트 허용
+        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
+        view.webViewClient = WebViewClient()
+        view.webChromeClient = WebChromeClient()
+        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
+        view.loadUrl(url)
+    }
 
     // 사진첩에서 사진 불러오기
     private fun getPhotoFromMyGallary() {

@@ -1,12 +1,14 @@
 package com.example.nav.ui.settings
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.nav.databinding.FragmentSettingsBinding
 
@@ -15,26 +17,41 @@ class SettingsFragment : Fragment() {
     private lateinit var settingsViewModel: SettingsViewModel
     private var _binding: FragmentSettingsBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSettings
-        settingsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val swebView: WebView = binding.swebView
+        val url = "http://34.64.143.233:8080/setiings"
+        val google = "https://www.google.com/"
+
+        goToWeb(swebView, google)
+
+        swebView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (event.action != KeyEvent.ACTION_DOWN) return@OnKeyListener true
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (swebView.canGoBack()) {
+                    swebView.goBack()
+                }
+                return@OnKeyListener true
+            }
+            false
         })
         return root
+    }
+
+    fun goToWeb(view: WebView, url: String) {
+        view.settings.javaScriptEnabled = true // 자바 스크립트 허용
+        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
+        view.webViewClient = WebViewClient()
+        view.webChromeClient = WebChromeClient()
+        /* 웹뷰에서 새 창이 뜨지 않도록 방지하는 구문 */
+        view.loadUrl(url)
     }
 
     override fun onDestroyView() {

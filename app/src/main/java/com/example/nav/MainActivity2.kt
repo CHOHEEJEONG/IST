@@ -1,6 +1,7 @@
 package com.example.nav
 
 import android.Manifest
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,6 +13,11 @@ import com.example.nav.databinding.ActivityMain2Binding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import androidx.fragment.app.FragmentTransaction
+import com.example.nav.ui.home.HomeFragment
+
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -36,11 +42,33 @@ class MainActivity2 : AppCompatActivity() {
                 R.id.navigation_settings
             )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        /*val myWebView: WebView = hwebView
+        // 웹뷰의 자바스크립트 기능을 활성화 시킵니다.
+        myWebView.settings.javaScriptEnabled = true
+
+        //BlackJin 명의 JavascriptInterface 를 추가해 줍니다.
+        myWebView.addJavascriptInterface(WebAppInterface(this), "Android")
+
+        //assets에 있는 sample.html을 로딩합니다.
+        val url = "http://34.64.143.233:8080/login"
+        myWebView.loadUrl(url)*/
 
     }
+
+    /** Instantiate the interface and set the context  */
+    class WebAppInterface(private val mContext: Context) {
+
+        /** Show a toast from the web page  */
+        @JavascriptInterface
+        fun showToast(toast: String) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     // 테드 퍼미션 설정 (카메라 사용시 권한 설정 팝업을 쉽게 구현하기 위해 사용)
     fun setPermission() {
