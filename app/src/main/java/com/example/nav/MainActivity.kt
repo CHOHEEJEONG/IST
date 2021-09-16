@@ -46,8 +46,9 @@ class MainActivity : AppCompatActivity() {
         myWebView.addJavascriptInterface(WebAppInterface(this), "Android")
 
         //웹을 로딩합니다.
-        val url = "http://34.64.81.103:8080/"
-        myWebView.loadUrl(url)
+        val url = "http://34.64.143.233:8080/"
+        val url2 = "http://34.64.81.103:8080/"
+        myWebView.loadUrl(url2)
     }
 
     /** Instantiate the interface and set the context  */

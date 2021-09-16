@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,8 @@ import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import com.example.nav.R
-
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 
 
 class HomeFragment : Fragment() {
@@ -279,9 +281,33 @@ class HomeFragment : Fragment() {
             savePhoto(bitmap)
         }
 
-        if(requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK){
-            img_photo.setImageURI(data?.data)
+        when(requestCode) {
+            REQUEST_IMAGE_PICK ->{
+                if(resultCode == Activity.RESULT_OK){
+                    data?.data?.let { uri ->
+                        launchImageCrop(uri)
+                    }
+                }
+                else {
+                    Log.e("ImageCrop Error : ","Couldn't select that image from memory.")
+                }
+            }
+
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ->{
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == Activity.RESULT_OK){
+                    img_photo.setImageURI(result.uri)
+                }
+            }
         }
+    }
+
+    private fun launchImageCrop(uri: Uri) {
+        CropImage.activity(uri)
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setAspectRatio(1, 1)
+            .start(requireContext(), this)
+
     }
 
     // 갤러리에 저장

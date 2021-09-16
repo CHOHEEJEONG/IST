@@ -27,10 +27,10 @@ class SettingsFragment : Fragment() {
         val root: View = binding.root
 
         val swebView: WebView = binding.swebView
-        val url = "http://34.64.143.233:8080/setiings"
+        val url = "http://34.64.81.103:8080/logout"
         val google = "https://www.google.com/"
 
-        goToWeb(swebView, google)
+        goToWeb(swebView, url)
 
         swebView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action != KeyEvent.ACTION_DOWN) return@OnKeyListener true
