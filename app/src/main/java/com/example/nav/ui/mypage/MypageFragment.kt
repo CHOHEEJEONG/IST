@@ -23,7 +23,7 @@ class MypageFragment : Fragment() {
 
     val BASE_URL = BuildConfig.BASE_URL
     val url = BASE_URL + "profile/" + "asdfasdf"
-
+ 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mypageViewModel =
             ViewModelProvider(this).get(MypageViewModel::class.java)
