@@ -12,18 +12,21 @@ import android.webkit.WebViewClient
 
 class TransferFragment : Fragment() {
 
+    val BASE_URL = BuildConfig.BASE_URL
+    val url = BASE_URL + "transform"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var view: View = inflater.inflate(R.layout.fragment_transfer, container, false)
 
+
+        (activity as MainActivity2).supportActionBar?.title = getString(R.string.title_transfer)
+
         val twebView: WebView = view.findViewById<WebView>(R.id.twebView)
-        val url = "http://34.64.143.233:8080/transfer"
-        val daum = "http://www.daum.net/"
 
         twebView!!.settings.javaScriptEnabled = true
         twebView.webViewClient = WebViewClient()
-        twebView.loadUrl(daum)
+        twebView.loadUrl(url)
         twebView.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {

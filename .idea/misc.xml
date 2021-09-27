@@ -8,6 +8,7 @@
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/drawable/button_text_custom.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/drawable/buttonshape.xml" value="0.3388888888888889" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/drawable/ic_camera.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/drawable/ic_smile.xml" value="0.203125" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/layout/activity_main2.xml" value="0.1" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/layout/fragment_community.xml" value="0.1" />
@@ -18,6 +19,11 @@
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/layout/fragment_transfer.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/mipmap-anydpi-v26/ic_app_icon01.xml" value="0.203125" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/mipmap-anydpi-v26/ic_app_icon01_round.xml" value="0.203125" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.203125" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.203125" />
+        <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/mipmap-anydpi-v26/ic_main01.xml" value="0.203125" />
         <entry key="..\:/Users/CHO/AndroidStudioProjects/nav/app/src/main/res/xml/file_paths.xml" value="0.1" />
       </map>
     </option>

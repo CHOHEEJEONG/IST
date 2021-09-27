@@ -10,6 +10,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.nav.BuildConfig
 import com.example.nav.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -19,6 +20,9 @@ class SettingsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    val BASE_URL = BuildConfig.BASE_URL
+    val url = BASE_URL + "logout"
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
@@ -27,9 +31,6 @@ class SettingsFragment : Fragment() {
         val root: View = binding.root
 
         val swebView: WebView = binding.swebView
-        val url = "http://34.64.81.103:8080/logout"
-        val google = "https://www.google.com/"
-
         goToWeb(swebView, url)
 
         swebView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->

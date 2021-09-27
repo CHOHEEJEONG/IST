@@ -10,6 +10,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.nav.BuildConfig
 import com.example.nav.databinding.FragmentCommunityBinding
 
 
@@ -20,6 +21,8 @@ class CommunityFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    val BASE_URL = BuildConfig.BASE_URL
+    val url = BASE_URL + "community/page/1"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         communityViewModel =
@@ -30,10 +33,7 @@ class CommunityFragment : Fragment() {
 
 
         val cwebView: WebView = binding.cwebView
-        val url = "http://34.64.143.233:8080/community"
-        val daum = "http://www.daum.net/"
-
-        goToWeb(cwebView, daum)
+        goToWeb(cwebView, url)
 
 
         cwebView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->

@@ -34,12 +34,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         android:text="Original Season"
         app:layout_constraintBottom_toTopOf="@+id/original_season"
         app:layout_constraintStart_toStartOf="@+id/original_season"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
     <RadioGroup
         android:id="@+id/original_season"
@@ -84,11 +84,11 @@
         android:id="@+id/selected_o_season"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:hint="selected season"
-        app:layout_constraintStart_toStartOf="@+id/original_season"
-        app:layout_constraintTop_toBottomOf="@+id/original_season" />
+        app:layout_constraintBottom_toTopOf="@+id/original_season"
+        app:layout_constraintEnd_toEndOf="@+id/original_season" />
 
 
     <TextView
@@ -105,7 +105,7 @@
         android:id="@+id/desired_season"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,11 +144,11 @@
         android:id="@+id/selected_d_season"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:hint="selected season"
-        app:layout_constraintStart_toStartOf="@+id/desired_season"
-        app:layout_constraintTop_toBottomOf="@+id/desired_season" />
+        app:layout_constraintBottom_toTopOf="@+id/desired_season"
+        app:layout_constraintEnd_toEndOf="@+id/desired_season" />
 
     <Button
         android:id="@+id/btn_transfer"
@@ -169,30 +169,13 @@
         android:id="@+id/btn_capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@color/white"
         android:drawableTop="@drawable/ic_camera"
         android:text="CAMERA"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/btn_album"
-        app:layout_constraintStart_toStartOf="@+id/desired_season"
-        app:layout_constraintTop_toBottomOf="@+id/desired_season" />
-
-    <Button
-        android:id="@+id/btn_album"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/white"
-        android:drawableTop="@drawable/ic_photo"
-        android:text="GALLERY"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/desired_season"
-        app:layout_constraintStart_toEndOf="@+id/btn_capture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desired_season" />
 
     <ImageView
@@ -207,17 +190,14 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_capture"
         tools:src="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/iv_compressed"
+    <TextView
+        android:id="@+id/user_name"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_photo"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintStart_toStartOf="@+id/original_season"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 

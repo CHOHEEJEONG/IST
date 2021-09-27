@@ -12,7 +12,6 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_transferFragment"
-            android:label="Result"
             app:destination="@id/transferFragment" />
     </fragment>
 

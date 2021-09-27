@@ -10,6 +10,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.nav.BuildConfig
 import com.example.nav.databinding.FragmentMypageBinding
 
 
@@ -20,6 +21,9 @@ class MypageFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    val BASE_URL = BuildConfig.BASE_URL
+    val url = BASE_URL + "profile/" + "asdfasdf"
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mypageViewModel =
             ViewModelProvider(this).get(MypageViewModel::class.java)
@@ -28,10 +32,7 @@ class MypageFragment : Fragment() {
         val root: View = binding.root
 
         val pwebView: WebView = binding.pwebView
-        val url = "http://34.64.143.233:8080/profile"
-        val google = "https://www.google.com/"
-
-        goToWeb(pwebView, google)
+        goToWeb(pwebView, url)
 
         pwebView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action != KeyEvent.ACTION_DOWN) return@OnKeyListener true

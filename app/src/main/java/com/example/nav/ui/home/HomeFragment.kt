@@ -1,18 +1,13 @@
 package com.example.nav.ui.home
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +19,9 @@ import com.example.nav.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
 import android.widget.Toast
 import android.widget.RadioButton
-import com.example.nav.MainActivity2
 import android.widget.RadioGroup
-import androidx.core.content.FileProvider
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.radiobutton.MaterialRadioButton
@@ -34,9 +29,30 @@ import java.io.*
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.nav.R
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.File
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import java.lang.StringBuilder
+import android.graphics.drawable.BitmapDrawable
+import android.R.attr.bitmap
+import android.content.res.Resources
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.BitmapFactory
+import android.util.Base64.NO_WRAP
+import android.util.Base64.encodeToString
+import android.util.Log
+import com.example.nav.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
+import java.net.URI
+import java.net.URL
 
 
 class HomeFragment : Fragment() {
@@ -48,6 +64,10 @@ class HomeFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity2
 
+    val BASE_URL = BuildConfig.BASE_URL
+
+    private var croppedUri: Uri? = null
+
     var originalGroup: RadioGroup? = null
     var originalButton: RadioButton? = null
     var desiredGroup: RadioGroup? = null
@@ -55,11 +75,12 @@ class HomeFragment : Fragment() {
     var selectedOSeason: TextView? = null
     var selectedDSeason: TextView? = null
 
-
-    val REQUEST_IMAGE_CAPTURE = 1  // 카메라 사진 촬영 요청 코드 *임의로 값 입력
-    lateinit var currentPhotoPath : String // 문자열 형태의 사진 경로값 (초기값을 null로 시작하고 싶을 때 - lateinit var)
-    val REQUEST_IMAGE_PICK = 10
-
+    // retrofit
+    val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    var server = retrofit.create(APIInterface::class.java)
 
 
     override fun onAttach(context: Context) {
@@ -68,6 +89,19 @@ class HomeFragment : Fragment() {
 
     }
 
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .setAspectRatio(1, 1)
+                .getIntent(mainActivity)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent)?.uri
+        }
+    }
+
+    private lateinit var  cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         homeViewModel =
@@ -76,14 +110,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root : View = binding.root
 
-
         originalGroup = binding.originalSeason
         desiredGroup = binding.desiredSeason
         selectedOSeason = binding.selectedOSeason
         selectedDSeason = binding.selectedDSeason
 
+        // 선택된 계절 표시된 textView 숨기기
+        selectedOSeason!!.setVisibility(View.INVISIBLE)
+        selectedDSeason!!.setVisibility(View.INVISIBLE)
+
+
         val btn_capture: Button = binding.btnCapture
-        val btn_album: Button = binding.btnAlbum
 
 
         originalGroup?.setOnCheckedChangeListener { group, i ->
@@ -102,20 +139,23 @@ class HomeFragment : Fragment() {
 
 
 
+        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
+            it?.let { uri ->
+                img_photo.setImageURI(uri)
+                savePhoto(uri)
+                croppedUri = uri
+            }
+        }
+
         btn_capture.setOnClickListener {
-            takeCapture()
+            cropActivityResultLauncher.launch(null)
         }
-
-        btn_album.setOnClickListener {
-            getPhotoFromMyGallary()
-        }
-
-        (activity as MainActivity2).setPermission()
-
 
         return root
 
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -124,194 +164,88 @@ class HomeFragment : Fragment() {
 
         // 변환 버튼 클릭 시 웹으로 데이터 전송 및 변환 결과 보여주는 웹으로 이동
         btn_transfer.setOnClickListener(View.OnClickListener {
-            Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
 
-            //bitmapToByteArray()
-            //val selectedImage = bitmapToByteArray2()
+            if((selectedOSeason!!.length() == 0) ||(selectedDSeason!!.length() == 0)){
+                Toast.makeText(mainActivity, "계절을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+            } else if(img_photo.drawable == null) {
+                Toast.makeText(mainActivity, "사진을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
+
+                // retrofit
+                // Image의 절대경로를 가져온다 : Uri to URL
+                Log.e("croppedUri : ", croppedUri.toString())
+                val imagePath: String = croppedUri.toString() // URL(절대경로)로 만들어줘야됨
+                Log.e("imagePath : ", imagePath)
+
+
+                // File변수에 File을 집어넣는다
+                var file = File(URI(imagePath))
+                Log.e("절대경로 : ", File(URI(imagePath)).toString())
+                Log.e("절대경로 : ", File(imagePath).toString())
+
+                var requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                var body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+
+                val map : HashMap<String?, RequestBody?> = HashMap()
+                val userInfo: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "user name")
+                val origin: RequestBody = RequestBody.create(MediaType.parse("text/plain"), selectedOSeason!!.text.toString())
+                val convert: RequestBody = RequestBody.create(MediaType.parse("text/plain"), selectedDSeason!!.text.toString())
+
+                map.put("userInfo", userInfo)
+                map.put("origin", origin)
+                map.put("convert", convert)
+
+                server.userEdit(body, map)?.enqueue(object: Callback<ResponseBody?> {
+                    override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                        Log.e("response : ", response?.body().toString())
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                        Log.e("response : ", "서버로 데이터 전송 실패했습니다.")
+                    }
+                })
+
+                // 변환 결과 web 띄우기
+                Toast.makeText(mainActivity, "변환 결과 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.action_navigation_home_to_transferFragment)
+            }
+
+
+
+            /*
             val selectedImage = bitmapToByteArray3()
 
             val webview = WebView(mainActivity)
-            val dataUrl = "http://34.64.143.233:8080/transform"
+            val dataUrl = "http://34.64.175.105:8080/community/create"
 
+            //content에 Array 한번에 받아서 보내기, postData는 지울 예정
             val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
                     "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
                     "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
 
-            webview.postUrl(dataUrl, postData.toByteArray())
+            val postContent = "content=${URLEncoder.encode(selectedImage.toString())}"
+
+            webview.postUrl(dataUrl, postContent.toByteArray())
             Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()
 
 
-            // 변환 결과 web 띄우기
-            Toast.makeText(mainActivity, "변환 결과 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
-            navController.navigate(R.id.action_navigation_home_to_transferFragment)
+            //파일로 test 확인 : 지울 것
+            val directory_name = "memo"
+            val filename = "memo01.txt"
+            (activity as MainActivity2).writeTextField(directory_name, filename, postData)*/
+
+
+
         })
 
     }
 
 
 
-    fun bitmapToByteArray() {
-        val ivSource: ImageView = img_photo
-        val ivCompressed: ImageView = iv_compressed
-
-        try {
-            val d = ivSource.drawable as BitmapDrawable
-            val bitmap = d.bitmap
-
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            val byteArray = stream.toByteArray()
-            val compressedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            ivCompressed.setImageBitmap(compressedBitmap)
-            Toast.makeText(
-                mainActivity.applicationContext,
-                "ByteArray created..",
-                Toast.LENGTH_SHORT
-            ).show()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
-    // Bitmap을 Byte로 변환
-    fun bitmapToByteArray3(): ByteArray {
-        val ivSource: ImageView = img_photo
-
-        val d = ivSource.drawable as BitmapDrawable
-        val bitmap = d.bitmap
-
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        return stream.toByteArray()
-
-    }
-
-    // 2 아니면 3
-    fun bitmapToByteArray2(): Bitmap? {
-        val ivSource: ImageView = img_photo
-
-        val d = ivSource.drawable as BitmapDrawable
-        val bitmap = d.bitmap
-
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        val byteArray = stream.toByteArray()
-        val compressedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-        return compressedBitmap
-
-    }
-
-
-
-    // 이미지를 바이트 배열로 변환 : 나중에 지우기
-    @Throws(IOException::class)
-    fun getBytes(`is`: InputStream): ByteArray? {
-        val byteBuffer = ByteArrayOutputStream()
-        val bufferSize = 1024 // 버퍼 크기
-        val buffer = ByteArray(bufferSize) // 버퍼 배열
-        var len = 0
-
-        // InputStream에서 읽어올 게 없을 때까지 바이트 배열에 쓴다.
-        while (`is`.read(buffer).also { len = it } != -1) byteBuffer.write(buffer, 0, len)
-        return byteBuffer.toByteArray()
-    }
-
-
-
-
-
-    // 사진첩에서 사진 불러오기
-    private fun getPhotoFromMyGallary() {
-        Intent(Intent.ACTION_PICK).apply{
-            type = "image/*"
-            startActivityForResult(this,REQUEST_IMAGE_PICK)
-        }
-    }
-
-    // 기본 카메라 앱을 사용해서 사진 촬영
-    private fun takeCapture() {
-        //기본 카메라 앱 실행
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(mainActivity.packageManager)?.also {
-                val photoFile : File? = try{
-                    createImageFile()
-                }catch (e:Exception){
-                    null
-                }
-                photoFile?.also {
-                    val photoURI : Uri = FileProvider.getUriForFile(
-                        mainActivity,
-                        "com.example.nav.fileprovider",
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
-    }
-
-    // 이미지 파일 생성
-    private fun createImageFile(): File {
-        val timestamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir : File? = mainActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_${timestamp}_",".jpeg",storageDir).apply {
-            currentPhotoPath = absolutePath
-        }
-    }
-
-    // startActivityForResult를 통해서 기본 카메라 앱으로 부터 받아온 결과값
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
-            val bitmap : Bitmap
-            val file = File(currentPhotoPath)
-            if(Build.VERSION.SDK_INT < 28){// 안드로이드 9.0 보다 버전이 낮을 경우
-                bitmap = MediaStore.Images.Media.getBitmap(mainActivity.contentResolver,Uri.fromFile(file))
-                img_photo.setImageBitmap(bitmap)
-            } else { // 안드로이드 9.0 보다 버전이 높을 경우
-                val decode = ImageDecoder.createSource(
-                    mainActivity.contentResolver,
-                    Uri.fromFile(file)
-                )
-                bitmap = ImageDecoder.decodeBitmap(decode)
-                img_photo.setImageBitmap(bitmap)
-            }
-            savePhoto(bitmap)
-        }
-
-        when(requestCode) {
-            REQUEST_IMAGE_PICK ->{
-                if(resultCode == Activity.RESULT_OK){
-                    data?.data?.let { uri ->
-                        launchImageCrop(uri)
-                    }
-                }
-                else {
-                    Log.e("ImageCrop Error : ","Couldn't select that image from memory.")
-                }
-            }
-
-            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE ->{
-                val result = CropImage.getActivityResult(data)
-                if (resultCode == Activity.RESULT_OK){
-                    img_photo.setImageURI(result.uri)
-                }
-            }
-        }
-    }
-
-    private fun launchImageCrop(uri: Uri) {
-        CropImage.activity(uri)
-            .setGuidelines(CropImageView.Guidelines.ON)
-            .setAspectRatio(1, 1)
-            .start(requireContext(), this)
-
-    }
-
     // 갤러리에 저장
-    private fun savePhoto(bitmap: Bitmap) {
+    fun savePhoto(uri: Uri) {
         // 사진 폴더에 저장하기 위한 경로 선언
         val absolutePath = "/storage/emulated/0/"
         val folderPath = "$absolutePath/pictures/"
@@ -322,6 +256,7 @@ class HomeFragment : Fragment() {
             folder.mkdir()
         }
         // 실제적인 저장 처리
+        val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
         val out = FileOutputStream(folderPath + fileName)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
         Toast.makeText(mainActivity,"사진이 앨범에 저장되었습니다.",Toast.LENGTH_SHORT).show()
