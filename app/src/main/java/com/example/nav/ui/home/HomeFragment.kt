@@ -5,13 +5,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,20 +23,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.radiobutton.MaterialRadioButton
 import java.io.*
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import java.lang.StringBuilder
-import android.graphics.drawable.BitmapDrawable
-import android.R.attr.bitmap
-import android.content.res.Resources
-import android.graphics.Bitmap.CompressFormat
-import android.graphics.BitmapFactory
-import android.util.Base64.NO_WRAP
-import android.util.Base64.encodeToString
 import android.util.Log
 import com.example.nav.*
 import okhttp3.MediaType
@@ -50,9 +37,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
 import java.net.URI
-import java.net.URL
 
 
 class HomeFragment : Fragment() {
@@ -138,7 +123,6 @@ class HomeFragment : Fragment() {
         }
 
 
-
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
             it?.let { uri ->
                 img_photo.setImageURI(uri)
@@ -175,7 +159,7 @@ class HomeFragment : Fragment() {
                 //Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
 
                 // retrofit
-                // Image의 절대경로를 가져온다 : Uri to URL
+                // Image의 절대경로를 가져온다
                 Log.e("croppedUri : ", croppedUri.toString())
                 val imagePath: String = croppedUri.toString() // URL(절대경로)로 만들어줘야됨
                 Log.e("imagePath : ", imagePath)
@@ -213,31 +197,6 @@ class HomeFragment : Fragment() {
                 Toast.makeText(mainActivity, "변환 결과 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_navigation_home_to_transferFragment)
             }
-
-
-
-            /*
-            val selectedImage = bitmapToByteArray3()
-
-            val webview = WebView(mainActivity)
-            val dataUrl = "http://34.64.175.105:8080/community/create"
-
-            //content에 Array 한번에 받아서 보내기, postData는 지울 예정
-            val postData = "origin=${URLEncoder.encode(selectedOSeason!!.text  as String?, "UTF-8")}" +
-                    "&convert=${URLEncoder.encode(selectedDSeason!!.text  as String?, "UTF-8")}" +
-                    "&imgArray=${URLEncoder.encode(selectedImage.toString(), "UTF-8")}"
-
-            val postContent = "content=${URLEncoder.encode(selectedImage.toString())}"
-
-            webview.postUrl(dataUrl, postContent.toByteArray())
-            Toast.makeText(mainActivity, "전송 완료", Toast.LENGTH_SHORT).show()
-
-
-            //파일로 test 확인 : 지울 것
-            val directory_name = "memo"
-            val filename = "memo01.txt"
-            (activity as MainActivity2).writeTextField(directory_name, filename, postData)*/
-
 
 
         })

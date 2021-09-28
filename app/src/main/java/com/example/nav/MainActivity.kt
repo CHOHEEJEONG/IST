@@ -27,12 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         goToWeb(mwebView,BASE_URL)
 
-        // main2로 가기 위한 임시 버튼 생성 : 최종 작업이 끝나면 url 변경 후 지울 예정
-        btn_main.setOnClickListener {
-            val intent = Intent(this, MainActivity2:: class.java)
-            startActivity(intent)
-        }
-
         setPermission()
 
     }

@@ -1,11 +1,9 @@
 package com.example.nav
 
-import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,9 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.nav.databinding.ActivityMain2Binding
 import com.example.nav.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
