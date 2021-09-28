@@ -167,6 +167,8 @@ class HomeFragment : Fragment() {
 
             if((selectedOSeason!!.length() == 0) ||(selectedDSeason!!.length() == 0)){
                 Toast.makeText(mainActivity, "계절을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+            } else if (selectedOSeason!!.text == selectedDSeason!!.text) {
+                Toast.makeText(mainActivity, "같은 계절은 선택할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else if(img_photo.drawable == null) {
                 Toast.makeText(mainActivity, "사진을 선택해 주세요.", Toast.LENGTH_SHORT).show()
             } else {
