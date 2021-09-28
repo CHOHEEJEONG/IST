@@ -1,14 +1,18 @@
 package com.example.nav
 
 import android.Manifest
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.nav.databinding.ActivityMain2Binding
+import com.example.nav.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -45,7 +49,13 @@ class MainActivity2 : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val navHostFragment: NavHostFragment? = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment?
+        val homeFragment = navHostFragment!!.childFragmentManager.fragments[0] as HomeFragment
 
+        var secondintent: Intent = getIntent() //getIntent()로 받을준비
+        var str = secondintent.getStringExtra("id").toString()
+        Log.e("str : ", str)
+        homeFragment.changeTextView(str)
 
     }
 

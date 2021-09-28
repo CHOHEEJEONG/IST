@@ -170,7 +170,7 @@ class HomeFragment : Fragment() {
             } else if(img_photo.drawable == null) {
                 Toast.makeText(mainActivity, "사진을 선택해 주세요.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
 
                 // retrofit
                 // Image의 절대경로를 가져온다 : Uri to URL
@@ -189,7 +189,7 @@ class HomeFragment : Fragment() {
 
 
                 val map : HashMap<String?, RequestBody?> = HashMap()
-                val userInfo: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "user name")
+                val userInfo: RequestBody = RequestBody.create(MediaType.parse("text/plain"), user_name!!.text.toString())
                 val origin: RequestBody = RequestBody.create(MediaType.parse("text/plain"), selectedOSeason!!.text.toString())
                 val convert: RequestBody = RequestBody.create(MediaType.parse("text/plain"), selectedDSeason!!.text.toString())
 
@@ -242,13 +242,18 @@ class HomeFragment : Fragment() {
 
     }
 
+    // userID text 받아오기 위해 Activity에서 실행할 메서드
+    fun changeTextView(string: String?){
+        user_name.text = string
+    }
+
 
 
     // 갤러리에 저장
     fun savePhoto(uri: Uri) {
         // 사진 폴더에 저장하기 위한 경로 선언
         val absolutePath = "/storage/emulated/0/"
-        val folderPath = "$absolutePath/pictures/"
+        val folderPath = "$absolutePath/pictures/picSeason/"
         val timestamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val fileName = "${timestamp}.jpeg"
         val folder = File(folderPath)

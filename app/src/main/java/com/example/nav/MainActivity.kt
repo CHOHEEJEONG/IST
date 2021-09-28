@@ -51,14 +51,14 @@ class MainActivity : AppCompatActivity() {
         myWebView.loadUrl(BASE_URL)
     }
 
-    /** Instantiate the interface and set the context  */
     class WebAppInterface(private val mContext: Context) {
 
-        /** Show a toast from the web page  */
         @JavascriptInterface
         fun AppConnection(user: String) {
             Toast.makeText(mContext, "Hello " + user, Toast.LENGTH_SHORT).show()
-            startActivity(mContext,Intent(mContext,MainActivity2::class.java),null)
+            val intent = Intent(mContext, MainActivity2::class.java)
+            intent.putExtra("id",user)
+            startActivity(mContext, intent, null)
 
         }
 
