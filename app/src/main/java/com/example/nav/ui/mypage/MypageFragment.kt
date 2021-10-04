@@ -27,7 +27,6 @@ class MypageFragment : Fragment() {
 
 
     val BASE_URL = BuildConfig.BASE_URL
-    val user = user_name.text.toString()
     val url = BASE_URL + "community/page/1"
 
 
