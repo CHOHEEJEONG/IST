@@ -1,5 +1,7 @@
 package com.example.nav.ui.mypage
 
+import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -22,9 +24,11 @@ class MypageFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+
+
     val BASE_URL = BuildConfig.BASE_URL
     val user = user_name.text.toString()
-    val url = BASE_URL + "profile/" + user
+    val url = BASE_URL + "community/page/1"
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +37,7 @@ class MypageFragment : Fragment() {
 
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
 
         val pwebView: WebView = binding.pwebView
         goToWeb(pwebView, url)
