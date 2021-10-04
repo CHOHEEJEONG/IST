@@ -21,7 +21,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     val BASE_URL = BuildConfig.BASE_URL
-    val url = BASE_URL + "logout"
+    val url = BASE_URL + "settings"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         settingsViewModel =

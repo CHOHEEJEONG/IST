@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nav.BuildConfig
 import com.example.nav.databinding.FragmentMypageBinding
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class MypageFragment : Fragment() {
@@ -22,7 +23,9 @@ class MypageFragment : Fragment() {
     private val binding get() = _binding!!
 
     val BASE_URL = BuildConfig.BASE_URL
-    val url = BASE_URL + "profile/" + "asdfasdf"
+    val user = user_name.text.toString()
+    val url = BASE_URL + "profile/" + user
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mypageViewModel =
