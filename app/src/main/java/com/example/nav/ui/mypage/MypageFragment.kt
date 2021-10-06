@@ -1,7 +1,5 @@
 package com.example.nav.ui.mypage
 
-import android.content.Intent
-import android.content.Intent.getIntent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater

@@ -8,7 +8,7 @@ import retrofit2.http.*
 data class ResponseBody(var result:String? = null)
 
 interface APIInterface {
-    @GET("/")
+   /* @GET("/")
     fun getRequest(@Query("name") name: String): Call<ResponseBody>
 
     @FormUrlEncoded
@@ -17,7 +17,7 @@ interface APIInterface {
         @Field("userInfo")userInfo: String,
         @Field("origin")origin: String,
         @Field("convert")convert: String
-    ):Call<ResponseBody>
+    ):Call<ResponseBody>*/
 
     @Multipart
     @POST("/transform")
@@ -27,11 +27,11 @@ interface APIInterface {
         @PartMap data: HashMap<String?, RequestBody?>?
     ): Call<ResponseBody?>?
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @PUT("/{id}")
     fun putRequest(@Path("id")id: String,
                    @Field("content")content: String): Call<ResponseBody>
 
     @DELETE("/{id}")
-    fun deleteRequest(@Path("id")id: String): Call<ResponseBody>
+    fun deleteRequest(@Path("id")id: String): Call<ResponseBody>*/
 }
