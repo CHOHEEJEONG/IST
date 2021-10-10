@@ -47,7 +47,7 @@ class TransferFragment : Fragment() {
         return view
     }
 
-    
 
 
 }
+
