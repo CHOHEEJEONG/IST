@@ -2,6 +2,7 @@ package com.example.nav.ui.home
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -28,6 +29,8 @@ import java.util.*
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
 import android.util.Log
+import android.webkit.JavascriptInterface
+import androidx.core.content.ContextCompat
 import com.example.nav.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -61,7 +64,7 @@ class HomeFragment : Fragment() {
     var selectedOSeason: TextView? = null
     var selectedDSeason: TextView? = null
 
-    // retrofit
+    // retrofit (RestAPI)
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -75,6 +78,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    // Image를 1:1로 Crop
     private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage.activity()
@@ -109,6 +113,7 @@ class HomeFragment : Fragment() {
         val btn_capture: Button = binding.btnCapture
 
 
+        // Radio button 클릭 시 계절 정보 표시
         originalGroup?.setOnCheckedChangeListener { group, i ->
             val idx = group.indexOfChild(root.findViewById(group.checkedRadioButtonId))
             originalButton = group.getChildAt(idx) as MaterialRadioButton
@@ -124,6 +129,7 @@ class HomeFragment : Fragment() {
         }
 
 
+        // crop된 이미지 경로 정보와 이미지 저장
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
             it?.let { uri ->
                 img_photo.setImageURI(uri)
@@ -146,17 +152,20 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController: NavController = Navigation.findNavController(view)
+        
 
         // 변환 버튼 클릭 시 웹으로 데이터 전송 및 변환 결과 보여주는 웹으로 이동
         btn_transfer.setOnClickListener(View.OnClickListener {
 
             if((selectedOSeason!!.length() == 0) ||(selectedDSeason!!.length() == 0)){
-                Toast.makeText(mainActivity, "계절을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mainActivity, "Please choose the season.", Toast.LENGTH_SHORT).show()
             } else if (selectedOSeason!!.text == selectedDSeason!!.text) {
-                Toast.makeText(mainActivity, "같은 계절은 선택할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mainActivity, "You can't choose the same season.", Toast.LENGTH_SHORT).show()
             } else if(img_photo.drawable == null) {
-                Toast.makeText(mainActivity, "사진을 선택해 주세요.", Toast.LENGTH_SHORT).show()
-            } else {
+                Toast.makeText(mainActivity, "Please upload the picture.", Toast.LENGTH_SHORT).show()
+            } else if(user_name.text == "") {
+                Toast.makeText(mainActivity, "Please log in.", Toast.LENGTH_SHORT).show()
+            }else {
                 //Toast.makeText(mainActivity, "Selected Season : " + selectedOSeason!!.text + "2" + selectedDSeason!!.text, Toast.LENGTH_SHORT).show()
 
                 // retrofit
@@ -194,7 +203,7 @@ class HomeFragment : Fragment() {
                     }
                 })
 
-                // 변환 결과 web 띄우기
+               // 변환 결과 web 띄우기
                 Toast.makeText(mainActivity, "변환 결과 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_navigation_home_to_transferFragment)
             }

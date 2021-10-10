@@ -45,6 +45,7 @@ class MainActivity2 : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // 서버로부터 받은 UserID를 HomeFragment의 textview에 띄우기
         val navHostFragment: NavHostFragment? = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment?
         val homeFragment = navHostFragment!!.childFragmentManager.fragments[0] as HomeFragment
 
@@ -57,8 +58,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
 
-    /*private fun setFragment()
-*/
+
 
 
     fun writeTextField(directory:String, filename:String, content: String) {

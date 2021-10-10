@@ -1,5 +1,6 @@
 package com.example.nav
 
+
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
@@ -10,10 +11,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 
 
+
 class TransferFragment : Fragment() {
 
     val BASE_URL = BuildConfig.BASE_URL
     val url = BASE_URL + "transform"
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -44,7 +47,7 @@ class TransferFragment : Fragment() {
         return view
     }
 
-
+    
 
 
 }
