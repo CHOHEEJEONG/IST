@@ -2,7 +2,7 @@
 
 ### CycleGAN 알고리즘을 이용한 사진 계절 변환 하이브리드 앱 *(2021.07.10 - 2021.10.11)*
 
-### 사용자의 요구에 따라 사용자의 사진 계절 변화 서비스 제공
+#### 사용자의 요구에 따라 사용자의 사진 계절 변화 서비스 제공
 
 + 영상
 <p align="center"><img width="30%" src="https://user-images.githubusercontent.com/83495586/138553339-d78ed77e-f3c3-4e7a-820e-e1c809fc2c8d.gif"/></p>
