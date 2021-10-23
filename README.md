@@ -1,4 +1,4 @@
-# ImageStyleTransfer : PicSeason
+# Image Style Transfer : PicSeason
 
 ### CycleGAN 알고리즘을 이용한 사진 계절 변환 하이브리드 앱 *(2021.07.10 - 2021.10.11)*
 
