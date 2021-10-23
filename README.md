@@ -5,7 +5,7 @@
 ### 사용자의 요구에 따라 사용자의 사진 계절 변화 서비스 제공
 
 + 영상
-<img width="100%" src="https://user-images.githubusercontent.com/83495586/138551481-183a60cc-e93f-4576-a2dc-90e0ec90b1f4.mp4.gif"/>
+<p align="center"><img width="100%" src="https://user-images.githubusercontent.com/83495586/138551481-183a60cc-e93f-4576-a2dc-90e0ec90b1f4.mp4"/></p>
 
 
 서버 : https://github.com/LambFerret/nodejsAndroid
