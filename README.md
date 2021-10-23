@@ -1,10 +1,21 @@
 # ImageStyleTransfer : PicSeason
 
+2021.07.10 - 2021.10.11
 CycleGAN 알고리즘을 이용한 사진 계절 변환 하이브리드 앱
+사용자의 요구에 따라 사용자의 사진 계절 변화 서비스 제공
+
 
 서버 : https://github.com/LambFerret/nodejsAndroid
 
 CycleGAN : ImageCrawling, ML https://github.com/LambFerret/ProjectFinal
+
+- 기능
+- 	회원가입 및 로그인
+- 	계절 선택 및 사진 업로드
+- 	사진 계절 변환
+- 	변환된 사진 업로드 게시판 생성
+-  	댓글 및 좋아요 기능
+- 	게시글 수정 및 삭제
 
 Activity, Fragment 구성
 
