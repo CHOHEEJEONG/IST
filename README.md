@@ -9,7 +9,7 @@ CycleGAN 알고리즘을 이용한 사진 계절 변환 하이브리드 앱
 
 CycleGAN : ImageCrawling, ML https://github.com/LambFerret/ProjectFinal
 
-- 기능
+기능
 - 	회원가입 및 로그인
 - 	계절 선택 및 사진 업로드
 - 	사진 계절 변환
